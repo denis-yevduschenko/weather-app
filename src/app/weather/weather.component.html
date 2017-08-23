@@ -1,0 +1,85 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><i class="icon-large icon-sun"></i>Forecast Weather App</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form class="navbar-form navbar-right" (ngSubmit)="getNewWeather($event)">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="City or zipcode" name="city" [(ngModel)]="city" required>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <p>{{today | date:'EEEE, d MMMM'}}</p>
+  <div class="col-xs-12" *ngIf="data">
+    <h3 class="text-center">{{data.city.name + ', '+ data.city.country}}</h3>
+    <p class="text-center">
+      <img src="{{'http://openweathermap.org/img/w/' + data.list[0].weather[0].icon + '.png'}}" alt="{{data.list[0].weather[0].description}}">
+      {{data.list[0].weather[0].main}}
+    </p>
+    <h1 class="text-center">{{data.list[0].temp.day}} &deg;C</h1>
+    <p class="text-center">
+      <span>
+        <strong>Pressure: </strong> {{data.list[0].pressure}}
+      </span>
+      <span>
+        <strong>Humidity: </strong> {{data.list[0].humidity}}
+      </span>
+      <span>
+        <strong>Wind speed: </strong> {{data.list[0].speed + 'm/s'}}
+      </span>
+      <span>
+        <strong>Clouds: </strong> {{data.list[0].clouds + '%'}}
+      </span>
+    </p>
+
+    <h4>Forecast 16 days</h4>
+    <div class="days">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#wind">Wind</a></li>
+        <li><a data-toggle="tab" href="#temp">Temperature</a></li>
+        <li><a data-toggle="tab" href="#pressure">Pressure</a></li>
+        <li><a data-toggle="tab" href="#humidity">Humidity</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="wind" class="tab-pane fade in active">
+          <h3>Wind</h3>
+          <p>Some content.</p>
+          <graph></graph>
+        </div>
+        <div id="temp" class="tab-pane fade">
+          <h3>Temperature</h3>
+          <p>Some content in Temperature.</p>
+        </div>
+        <div id="pressure" class="tab-pane fade">
+          <h3>Pressure</h3>
+          <p>Some content in pressure.</p>
+        </div>
+        <div id="humidity" class="tab-pane fade">
+          <h3>humidity</h3>
+          <p>Some content in humidity.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<h3>Weather Component</h3>
+
+<p>{{data}}</p>
+<button (click)="getWeather()">getWeather</button>
