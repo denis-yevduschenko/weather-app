@@ -1,0 +1,7 @@
+.main .night{
+  background-color: black;
+  color: white;
+}
+.main .night, .main .day{
+  padding: 2px 3px;
+}

@@ -12,43 +12,56 @@ export class WeatherComponent {
   city: string;
   today: number = Date.now();
   weatherData: Object;
+
   constructor(private weatherService: WeatherService) {
-    this.getWeather();
+    //this.getWeather();
   }
 
   getWeather(city: string = 'London', country: string = 'UK'){
     this.weatherService.getData(city, country).subscribe(data => {
+      this.weatherData = WeatherComponent.prepareData(data);
       this.data = data;
       console.log(this.data);
-      this.weatherData = WeatherComponent.prepareData(this.data);
-      this.weatherService.updateWeather(this.weatherData);
     });
   }
 
   private static prepareData(data) {
+    let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let arr = data.list;
     let localObj: GraphSettings = new GraphSettings();
-    let now = new Date();
-    let future = new Date();
     for (let i = 0; i < arr.length; i++){
       localObj.humidity.push(arr[i].humidity);
       localObj.temperature.push(arr[i].temp.day);
       localObj.pressure.push(arr[i].pressure);
-      localObj.clouds.push(arr[i].clouds);
-
-      future.setDate(now.getDate()+ Number(i) );
-      localObj.days.push(future.getDate() + " " + future.getMonth());
+      localObj.speed.push(arr[i].speed);
+      let date = new Date(new Date().getTime()+(i*24*60*60*1000));
+      localObj.days.push(date.getDate() + " " + monthNames[date.getMonth()]);
     }
     return localObj;
   }
 
   getNewWeather(event: any){
     event.preventDefault();
+
     let inputData = this.city.split(',');
     this.city = '';
-    console.log(inputData);
     let city = inputData[0];
     let country = inputData[1].trim();
     this.getWeather(city, country);
+  }
+
+  getNewWeather2(event: any){
+    event.preventDefault();
+
+    let inputData = this.city.split(',');
+    this.city = '';
+    let city = inputData[0];
+    let country = inputData[1].trim();
+    this.getWeather(city, country);
+  }
+
+  showGraph(){
+
+    this.weatherService.updateWeather(this.weatherData);
   }
 }
