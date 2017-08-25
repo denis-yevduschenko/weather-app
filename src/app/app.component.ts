@@ -3,8 +3,8 @@ import {WeatherService} from "./service/weather.service";
 
 @Component({
   selector: 'app',
-  templateUrl: './app.component.html',
-  providers:[WeatherService]
+  styleUrls: ['app.component.css'],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
 }

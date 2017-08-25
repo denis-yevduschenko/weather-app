@@ -8,51 +8,92 @@ import {WeatherService} from "../service/weather.service";
 })
 export class GraphComponent implements OnInit{
   @Input() type: string;
-  constructor(private weatherService: WeatherService) {
-
-  }
+  metric :string;
+  min: number = null;
+  constructor(private weatherService: WeatherService) {}
 
   ngOnInit(){
     this.weatherService.currentWeather.subscribe(
       data => {
         this.setOptions(data);
       });
-
-
-
   }
 
   setOptions(data){
-    let values = this.retrieveValuesFromData(data);
+    let values = this.retrieveValuesFromData(data, this.type);
     this.options = {
       chart: {
         type: 'column',
-        backgroundColor: "#00bfff",
+        backgroundColor: "#063852",
         shadow: true
       },
-      title : { text : '16 day weather forecast' },
+      title : {
+        text : '16 day weather forecast',
+        style: {
+          color: "#ffffff",
+          fontSize: "18px"
+        }
+      },
       xAxis: {
         categories: data.days
       },
-      series: [{
-        name: this.type,
-        data: values,
-      }]
+      yAxis: {
+        title: {
+          text: this.metric,
+          style: {
+            color: "#ffffff"
+          }
+        },
+        min: this.min
+      },
+      series: values
     };
   }
 
-  retrieveValuesFromData(data){
-    if(this.type == 'Wind'){
-      return data.speed;
-    }
-    if(this.type == 'Temperature'){
-      return data.temperature;
-    }
-    if(this.type == 'Humidity'){
-      return data.humidity;
-    }
-    if(this.type == 'Pressure'){
-      return data.pressure;
+  retrieveValuesFromData(data, marker){
+    if(marker == 'Wind'){
+      this.metric = 'm/s';
+      return [{
+        name: this.type,
+        data: data.speed,
+        color: '#F0810F',
+        borderColor: "#E6DF44",
+        marker: {
+          fillColor: 'white'
+        }
+      }];
+    } else if(marker == 'Temperature'){
+      this.metric = '°C';
+      return [{
+        name: this.type,
+        data: data.temperature,
+        color: '#F0810F',
+        borderColor: "#E6DF44"
+      },
+      {
+        name: this.type + " at night",
+        data: data.temperatureNight,
+        color: '#011A27',
+        borderColor: "#E6DF44"
+      }];
+    } else if(marker == 'Humidity'){
+      this.metric = '%';
+      return [{
+        name: this.type,
+        data: data.humidity,
+        color: '#F0810F',
+        borderColor: "#E6DF44",
+        pointStart: 700
+      }];
+    } else if(marker == 'Pressure'){
+      this.min = 900;
+      this.metric = 'hPa';
+      return [{
+        name: this.type,
+        data: data.pressure,
+        color: '#F0810F',
+        borderColor: "#E6DF44"
+      }];
     }
   }
 

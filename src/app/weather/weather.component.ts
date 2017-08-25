@@ -20,6 +20,7 @@ export class WeatherComponent {
   getWeather(city: string = 'London', country: string = 'UK'){
     this.weatherService.getData(city, country).subscribe(data => {
       this.weatherData = WeatherComponent.prepareData(data);
+      this.refreshGraph();
       this.data = data;
       console.log(this.data);
     });
@@ -32,6 +33,7 @@ export class WeatherComponent {
     for (let i = 0; i < arr.length; i++){
       localObj.humidity.push(arr[i].humidity);
       localObj.temperature.push(arr[i].temp.day);
+      localObj.temperatureNight.push(arr[i].temp.night);
       localObj.pressure.push(arr[i].pressure);
       localObj.speed.push(arr[i].speed);
       let date = new Date(new Date().getTime()+(i*24*60*60*1000));
@@ -60,8 +62,7 @@ export class WeatherComponent {
     this.getWeather(city, country);
   }
 
-  showGraph(){
-
+  refreshGraph(){
     this.weatherService.updateWeather(this.weatherData);
   }
 }
