@@ -6,10 +6,10 @@ import {Subject} from "rxjs";
 
 @Injectable()
 export class WeatherService {
-  public currentWeather = new Subject<any>();
+  public currentWeather;
 
   constructor(private http: Http) {
-    console.log('Weather Service Initialised ...');
+    this.currentWeather = new Subject<any>();
   }
 
   getData(city, countryCode) {
@@ -24,7 +24,6 @@ export class WeatherService {
       .map(res => res.json());
 
   }
-
 
   updateWeather(weather){
     this.currentWeather.next(weather);

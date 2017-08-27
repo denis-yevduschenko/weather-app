@@ -1,22 +1,32 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {WeatherService} from "../service/weather.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'graph',
   styleUrls: ['graph.component.css'],
   templateUrl: 'graph.component.html'
 })
-export class GraphComponent implements OnInit{
+export class GraphComponent implements OnInit, OnDestroy{
+
   @Input() type: string;
   metric :string;
   min: number = null;
+  max: number = null;
+  subscription: Subscription;
+  options: Object;
+
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit(){
-    this.weatherService.currentWeather.subscribe(
+    this.subscription = this.weatherService.currentWeather.subscribe(
       data => {
         this.setOptions(data);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   setOptions(data){
@@ -44,7 +54,8 @@ export class GraphComponent implements OnInit{
             color: "#ffffff"
           }
         },
-        min: this.min
+        min: this.min,
+        max: this.max
       },
       series: values
     };
@@ -78,12 +89,12 @@ export class GraphComponent implements OnInit{
       }];
     } else if(marker == 'Humidity'){
       this.metric = '%';
+      this.max = 100;
       return [{
         name: this.type,
         data: data.humidity,
         color: '#F0810F',
-        borderColor: "#E6DF44",
-        pointStart: 700
+        borderColor: "#E6DF44"
       }];
     } else if(marker == 'Pressure'){
       this.min = 900;
@@ -96,6 +107,4 @@ export class GraphComponent implements OnInit{
       }];
     }
   }
-
-  options: Object;
 }

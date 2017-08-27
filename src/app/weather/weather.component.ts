@@ -10,23 +10,23 @@ import {GraphSettings} from "../model/GraphSettings";
 export class WeatherComponent {
   data: string;
   city: string;
+  errorMessage: string;
   today: number = Date.now();
   weatherData: Object;
 
-  constructor(private weatherService: WeatherService) {
-    //this.getWeather();
-  }
+  constructor(private weatherService: WeatherService) {}
 
   getWeather(city: string = 'London', country: string = 'UK'){
     this.weatherService.getData(city, country).subscribe(data => {
-      this.weatherData = WeatherComponent.prepareData(data);
-      this.refreshGraph();
+      this.prepareData(data);
       this.data = data;
-      console.log(this.data);
+      setTimeout(function () {
+        document.getElementById( "refresh-button" ).click();
+      }, 300);
     });
   }
 
-  private static prepareData(data) {
+  private prepareData(data) {
     let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let arr = data.list;
     let localObj: GraphSettings = new GraphSettings();
@@ -39,27 +39,25 @@ export class WeatherComponent {
       let date = new Date(new Date().getTime()+(i*24*60*60*1000));
       localObj.days.push(date.getDate() + " " + monthNames[date.getMonth()]);
     }
-    return localObj;
+    this.weatherData =  localObj;
   }
 
   getNewWeather(event: any){
     event.preventDefault();
+    if (/,/i.test(this.city)){
+      let inputData = this.city.split(',');
+      this.city = '';
+      let city = inputData[0].trim();
+      let country = inputData[1].trim();
+      this.getWeather(city, country);
+    } else {
+      let _this = this;
+      this.errorMessage = "You should enter the data in the format: City, Country";
+      setTimeout(function () {
+        _this.errorMessage = "";
+      }, 3000);
+    }
 
-    let inputData = this.city.split(',');
-    this.city = '';
-    let city = inputData[0];
-    let country = inputData[1].trim();
-    this.getWeather(city, country);
-  }
-
-  getNewWeather2(event: any){
-    event.preventDefault();
-
-    let inputData = this.city.split(',');
-    this.city = '';
-    let city = inputData[0];
-    let country = inputData[1].trim();
-    this.getWeather(city, country);
   }
 
   refreshGraph(){

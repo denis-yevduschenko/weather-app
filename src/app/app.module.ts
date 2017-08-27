@@ -8,7 +8,7 @@ import { HttpModule } from '@angular/http';
 
 import { WeatherComponent } from "./weather/weather.component";
 import { ChartModule } from 'angular2-highcharts';
-import { GraphComponent } from "./chart-example/graph.component";
+import { GraphComponent } from "./graph/graph.component";
 import {WeatherService} from "./service/weather.service";
 
 @NgModule({

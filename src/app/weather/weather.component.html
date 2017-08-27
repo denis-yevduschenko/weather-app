@@ -1,3 +1,4 @@
+<!-- header -->
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -7,23 +8,26 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><i class="icon-large icon-sun"></i>Forecast Weather App</a>
+      <a class="navbar-brand" href="#">Forecast Weather App</a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <form class="navbar-form navbar-right" (ngSubmit)="getNewWeather($event)">
+        <span class="error">{{errorMessage}}</span>
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="City or zipcode" name="city" [(ngModel)]="city" required>
+          <input type="text" class="form-control" placeholder="City, Country" name="city" [(ngModel)]="city" required>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
     </div>
   </div>
 </nav>
+<!-- end header -->
 
 <div class="container-fluid main">
   <div class="col-xs-12">
-    <div class="col-xs-offset-2 col-xs-8" *ngIf="data">
+    <!-- main info-->
+    <div class="col-xs-12 col-sm-8" *ngIf="data">
       <div class="row head" >
         <p>{{today | date:'EEEE, d MMMM'}}</p>
         <h3 class="text-center">{{data.city.name + ', '+ data.city.country}}</h3>
@@ -37,10 +41,10 @@
         </h1>
         <p class="text-center">
         <span>
-          <strong>Pressure: </strong> {{data.list[0].pressure}}
+          <strong>Pressure: </strong> {{data.list[0].pressure + 'hPa'}}
         </span>
           <span>
-          <strong>Humidity: </strong> {{data.list[0].humidity}}
+          <strong>Humidity: </strong> {{data.list[0].humidity + '%'}}
         </span>
           <span>
           <strong>Wind speed: </strong> {{data.list[0].speed + 'm/s'}}
@@ -52,7 +56,7 @@
       </div>
     </div>
 
-    <div class="col-xs-offset-2 col-xs-8" *ngIf="!data">
+    <div class="col-xs-12 col-sm-8" *ngIf="!data">
       <div class="row no-data text-center">
         <h3>
           Enter city and country code to input field and get the weather.
@@ -62,8 +66,8 @@
       </div>
     </div>
 
-    <div class="col-xs-2">
-      <div class="btn-group-vertical">
+    <div class="col-xs-12 col-sm-4">
+      <div class="btn-group-vertical" style="width: 100%">
         <button class="btn btn-info" (click)="getWeather('Milano', 'IT')">Milano, IT</button>
         <button class="btn btn-info" (click)="getWeather('Kiev', 'UA')">Kiev, UA</button>
         <button class="btn btn-info" (click)="getWeather('New York', 'US')">New York, US</button>
@@ -71,8 +75,11 @@
         <button class="btn btn-info" (click)="getWeather('Tokyo', 'JP')">Tokyo, JP</button>
       </div>
     </div>
+    <!-- end main info -->
+    <!-- highcharts -->
     <div class="col-xs-12">
-      <h4>Forecast 16 days <button class="btn btn-success" (click)="refreshGraph()" *ngIf="data">Show weather forecast for 16 days</button></h4>
+      <h4>Forecast 16 days</h4>
+      <button id="refresh-button" class="btn" (click)="refreshGraph()">Show weather</button>
       <div class="days">
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#wind">Wind</a></li>
@@ -121,7 +128,8 @@
         </div>
       </div>
     </div>
+    <!-- end highcharts -->
   </div>
 </div>
 
-<button (click)="getWeather()">getWeather</button>
+

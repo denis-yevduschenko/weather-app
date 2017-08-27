@@ -2,7 +2,12 @@
   background-color: black;
   color: white;
 }
-.main .night, .main .day{
-  padding: 2px 3px;
+.main .night, .main .day, span{
+  padding: 2px 8px;
 }
-
+#refresh-button{
+  display: none;
+}
+span.error{
+  color: darkorange;
+}
