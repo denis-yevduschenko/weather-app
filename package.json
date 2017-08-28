@@ -1,17 +1,13 @@
 {
-  "name": "angular2-seed",
+  "name": "angular2-weather-app",
   "version": "1.0.0",
-  "description": "A simple starter Angular2 project",
+  "description": "Forecast weather App (Angular2 project)",
   "scripts": {
     "build": "rimraf dist && webpack --progress",
     "watch": "npm run build -- --watch",
     "server": "webpack-dev-server --inline --progress --port 3000 --content-base src",
     "start": "npm run server"
   },
-  "contributors": [
-    "Rob Wormald <robwormald@gmail.com>",
-    "PatrickJS <github@gdi2290.com>"
-  ],
   "license": "MIT",
   "dependencies": {
     "@angular/common": "~4.0.1",
@@ -49,17 +45,15 @@
     "webpack-merge": "^4.1.0"
   },
   "keywords": [
-    "Angular2",
-    "angular2-seed",
-    "official angular 2 seed",
-    "official angular2 seed"
+    "Forecast",
+    "Weather"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/angular/angular2-seed.git"
+    "url": "git+https://github.com/denis-yevduschenko/weather-app.git"
   },
   "bugs": {
-    "url": "https://github.com/angular/angular2-seed/issues"
+    "url": "https://github.com/denis-yevduschenko/weather-app/issues"
   },
-  "homepage": "https://github.com/angular/angular2-seed#readme"
+  "homepage": "https://github.com/denis-yevduschenko/weather-app#readme"
 }
